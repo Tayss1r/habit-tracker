@@ -1,0 +1,23 @@
+# === Python / FastAPI ===
+__pycache__/
+*.py[cod]
+*.env
+venvpire/
+*.sqlite3
+*.log
+*.pyc
+
+# === Node / Electron ===
+node_modules/
+dist/
+out/
+npm-debug.log
+yarn-error.log
+package-lock.json
+.env
+
+# === OS / Editor ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
