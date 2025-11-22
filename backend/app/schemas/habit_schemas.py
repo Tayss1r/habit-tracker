@@ -14,9 +14,17 @@ class Habit(BaseModel):
     created_at: datetime = Field(default_factory=datetime.now)
     is_active: bool = True                  # Can deactivate habits
 
+    class Config:
+        populate_by_name = True
+        json_encoders = {datetime: lambda v: v.isoformat()}
+
 class HabitLog(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     habit_id: PyObjectId
     user_id: PyObjectId
     date: datetime = Field(default_factory=datetime.now)
     is_done: bool = False
+
+    class Config:
+        populate_by_name = True
+        json_encoders = {datetime: lambda v: v.isoformat()}
