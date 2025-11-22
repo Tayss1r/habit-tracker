@@ -11,7 +11,7 @@ class User(BaseModel):
     email: EmailStr
     password: str
     username: str
-    created_at: datetime = Field(default_factory=datetime.now)
+    created_at: Optional[datetime] = Field(default_factory=datetime.now)
 
 
 class UserCreate(BaseModel):

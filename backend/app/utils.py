@@ -1,9 +1,11 @@
 from passlib.hash import bcrypt
+from passlib.context import CryptContext
 
-def hash_password(password: str) -> str:
-    """Hash a plain text password."""
-    return bcrypt.hash(password)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a plain password against its hash."""
-    return bcrypt.verify(plain_password, hashed_password)
+
+def hash(password: str):
+    return pwd_context.hash(password)
+
+def verify(plain_pwd, hashed_pwd):
+    return pwd_context.verify(plain_pwd, hashed_pwd)

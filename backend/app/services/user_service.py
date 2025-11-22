@@ -1,10 +1,11 @@
 from typing import Optional
+from datetime import datetime
 from bson import ObjectId
 from passlib.hash import bcrypt
 from ..schemas import PyObjectId
 from ..schemas.user_schemas import User
 from ..db.database import db
-from ..utils import hash_password
+from ..utils import hash
 class UserService:
     def __init__(self, collection_name: str = "users"):
         self.collection = db[collection_name]
@@ -14,8 +15,8 @@ class UserService:
         user_doc = {
             "email": email,
             "username": username,
-            "password": self.hash_password(password),
-            "created_at": None
+            "password": hash(password),
+            "created_at": datetime.now()
         }
         result = await self.collection.insert_one(user_doc)
         user_doc["_id"] = result.inserted_id
