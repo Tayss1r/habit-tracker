@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habit Tracker - Register</title>
+  <title>Habit Tracker - Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes fadeIn {
@@ -24,13 +24,13 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
       </div>
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">Join Habit Tracker</h1>
-      <p class="text-gray-600">Create your account and start building better habits</p>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Habit Tracker</h1>
+      <p class="text-gray-600">Welcome back! Please login to continue</p>
     </div>
 
-    <!-- Register Form Card -->
+    <!-- Login Form Card -->
     <div class="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-opacity-95">
-      <form id="registerForm" class="space-y-6">
+      <form id="loginForm" class="space-y-6">
         <!-- Email Input -->
         <div>
           <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
@@ -43,18 +43,6 @@
           >
         </div>
 
-        <!-- Username Input -->
-        <div>
-          <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
-          <input 
-            type="text" 
-            id="username" 
-            required
-            placeholder="Choose a username"
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
-          >
-        </div>
-
         <!-- Password Input -->
         <div>
           <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
@@ -62,23 +50,23 @@
             type="password" 
             id="password" 
             required
-            placeholder="Create a strong password"
+            placeholder="Enter your password"
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
           >
         </div>
 
-        <!-- Error/Success Message -->
-        <div id="message" class="hidden p-4 rounded">
-          <p class="text-sm font-medium"></p>
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded">
+          <p class="text-red-700 text-sm font-medium"></p>
         </div>
 
-        <!-- Register Button -->
+        <!-- Login Button -->
         <button 
           type="submit" 
-          id="registerBtn"
+          id="loginBtn"
           class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
         >
-          Create Account
+          Sign In
         </button>
       </form>
 
@@ -92,12 +80,12 @@
         </div>
       </div>
 
-      <!-- Login Link -->
+      <!-- Register Link -->
       <div class="text-center">
         <p class="text-gray-600 text-sm">
-          Already have an account? 
-          <a href="login.html" class="text-purple-600 hover:text-purple-800 font-semibold hover:underline">
-            Sign in here
+          Don't have an account? 
+          <a href="index.html" class="text-purple-600 hover:text-purple-800 font-semibold hover:underline">
+            Create one now
           </a>
         </p>
       </div>
@@ -109,6 +97,6 @@
     </div>
   </div>
 
-  <script src="renderer.js"></script>
+  <script src="login.js"></script>
 </body>
 </html>
