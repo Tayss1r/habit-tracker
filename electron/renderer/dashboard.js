@@ -6,6 +6,8 @@ let habitStatuses = {};
 
 // DOM Elements
 const navUsername = document.getElementById("navUsername");
+const navProfileImage = document.getElementById("navProfileImage");
+const profileBtn = document.getElementById("profileBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const habitsContainer = document.getElementById("habitsContainer");
 const emptyState = document.getElementById("emptyState");
@@ -20,6 +22,15 @@ const deleteHabitBtn = document.getElementById("deleteHabitBtn");
 const totalHabitsEl = document.getElementById("totalHabits");
 const completedTodayEl = document.getElementById("completedToday");
 const completionRateEl = document.getElementById("completionRate");
+const profileModal = document.getElementById("profileModal");
+const closeProfileModal = document.getElementById("closeProfileModal");
+const profileForm = document.getElementById("profileForm");
+const profileImagePreview = document.getElementById("profileImagePreview");
+const profileImageSelect = document.getElementById("profileImageSelect");
+const profileUsername = document.getElementById("profileUsername");
+const profileEmail = document.getElementById("profileEmail");
+const profilePassword = document.getElementById("profilePassword");
+const profileMessage = document.getElementById("profileMessage");
 
 // Category colors and icons
 const categoryStyles = {
@@ -72,6 +83,11 @@ async function initDashboard() {
 
   currentUser = JSON.parse(userData);
   navUsername.textContent = currentUser.username;
+  
+  // Set profile image if available
+  if (currentUser.profileImage) {
+    navProfileImage.src = `../assets/figures/${currentUser.profileImage}`;
+  }
 
   // Load habits
   await loadHabits();
@@ -366,6 +382,105 @@ logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("user");
   window.electron.logout();
 });
+
+// Profile Modal Handlers
+profileBtn.addEventListener("click", async () => {
+  try {
+    const user = await window.api.getUser(currentUser.userId);
+    
+    // Populate form with current user data
+    profileUsername.value = user.username;
+    profileEmail.value = user.email;
+    profileImageSelect.value = user.profile_image || "user-2.jpg";
+    profileImagePreview.src = `../assets/figures/${user.profile_image || "user-2.jpg"}`;
+    profilePassword.value = "";
+    
+    profileModal.classList.remove("hidden");
+  } catch (error) {
+    console.error("Error loading profile:", error);
+    showNotification("Failed to load profile", "error");
+  }
+});
+
+closeProfileModal.addEventListener("click", () => {
+  profileModal.classList.add("hidden");
+  hideProfileMessage();
+});
+
+profileModal.addEventListener("click", (e) => {
+  if (e.target === profileModal) {
+    profileModal.classList.add("hidden");
+    hideProfileMessage();
+  }
+});
+
+// Update profile image preview
+profileImageSelect.addEventListener("change", (e) => {
+  profileImagePreview.src = `../assets/figures/${e.target.value}`;
+});
+
+// Handle profile form submission
+profileForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  hideProfileMessage();
+
+  const updateData = {
+    username: profileUsername.value.trim(),
+    email: profileEmail.value.trim(),
+    profile_image: profileImageSelect.value
+  };
+
+  // Only include password if it's not empty
+  const password = profilePassword.value.trim();
+  if (password) {
+    if (password.length < 6) {
+      showProfileMessage("Password must be at least 6 characters", "error");
+      return;
+    }
+    updateData.password = password;
+  }
+
+  try {
+    const updatedUser = await window.api.updateUser(currentUser.userId, updateData);
+    
+    // Update localStorage and UI
+    currentUser.username = updatedUser.username;
+    currentUser.email = updatedUser.email;
+    currentUser.profileImage = updatedUser.profile_image;
+    localStorage.setItem("user", JSON.stringify(currentUser));
+    
+    navUsername.textContent = updatedUser.username;
+    navProfileImage.src = `../assets/figures/${updatedUser.profile_image}`;
+    
+    showProfileMessage("Profile updated successfully!", "success");
+    setTimeout(() => {
+      profileModal.classList.add("hidden");
+      hideProfileMessage();
+    }, 1500);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    showProfileMessage(error.message || "Failed to update profile", "error");
+  }
+});
+
+function showProfileMessage(text, type = "error") {
+  profileMessage.classList.remove("hidden", "bg-red-50", "border-red-500", "bg-green-50", "border-green-500");
+  profileMessage.querySelector("p").classList.remove("text-red-700", "text-green-700");
+  
+  if (type === "success") {
+    profileMessage.classList.add("bg-green-50", "border-l-4", "border-green-500");
+    profileMessage.querySelector("p").classList.add("text-green-700");
+  } else {
+    profileMessage.classList.add("bg-red-50", "border-l-4", "border-red-500");
+    profileMessage.querySelector("p").classList.add("text-red-700");
+  }
+  
+  profileMessage.querySelector("p").textContent = text;
+}
+
+function hideProfileMessage() {
+  profileMessage.classList.add("hidden");
+}
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", initDashboard);

@@ -49,9 +49,37 @@ function createDashboardWindow() {
   });
 }
 
+function createAdminDashboardWindow() {
+  // Close login window if it exists
+  if (loginWindow) {
+    loginWindow.close();
+    loginWindow = null;
+  }
+
+  dashboardWindow = new BrowserWindow({
+    width: 1400,
+    height: 900,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  });
+
+  dashboardWindow.loadFile("renderer/admin-dashboard.html");
+
+  dashboardWindow.on("closed", () => {
+    dashboardWindow = null;
+  });
+}
+
 // IPC handlers
 ipcMain.on("open-dashboard", () => {
   createDashboardWindow();
+});
+
+ipcMain.on("open-admin-dashboard", () => {
+  createAdminDashboardWindow();
 });
 
 ipcMain.on("logout", () => {

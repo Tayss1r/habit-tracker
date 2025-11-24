@@ -43,12 +43,18 @@ loginForm.addEventListener("submit", async (e) => {
     // Store user data in localStorage
     localStorage.setItem("user", JSON.stringify({
       userId: result.user_id,
-      username: result.message.replace("Welcome back, ", "").replace("!", ""),
-      email: email
+      username: result.username,
+      email: result.email,
+      profileImage: result.profile_image,
+      isAdmin: result.is_admin
     }));
 
-    // Open dashboard
-    window.electron.openDashboard();
+    // Open appropriate dashboard
+    if (result.is_admin) {
+      window.electron.openAdminDashboard();
+    } else {
+      window.electron.openDashboard();
+    }
     
   } catch (error) {
     console.error("Login error:", error);
