@@ -16,7 +16,7 @@ async def register(user: UserCreate):
     profile_image = user.profile_image if user.profile_image else "user-2.jpg"
     await user_service.create_user(user.email, user.username, user.password, profile_image, user.is_admin)
     return {
-        "message" : "account Created! Check your email inbox to verify you account",
+        "message" : "account Created!",
     }
 
 @auth_router.post("/login")

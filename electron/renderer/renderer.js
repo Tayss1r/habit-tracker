@@ -4,6 +4,7 @@ const registerForm = document.getElementById("registerForm");
 const emailInput = document.getElementById("email");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
 const profileImageInput = document.getElementById("profileImage");
 const previewImage = document.getElementById("previewImage");
 const registerBtn = document.getElementById("registerBtn");
@@ -102,16 +103,22 @@ registerForm.addEventListener("submit", async (e) => {
   const email = emailInput.value.trim();
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
+  const confirmPassword = confirmPasswordInput.value.trim();
   const profileImage = profileImageInput.value;
 
   // Basic validation
-  if (!email || !username || !password) {
+  if (!email || !username || !password || !confirmPassword) {
     showMessage("Please fill in all fields", "error");
     return;
   }
 
   if (password.length < 6) {
     showMessage("Password must be at least 6 characters", "error");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showMessage("Passwords do not match", "error");
     return;
   }
 
@@ -145,3 +152,4 @@ registerForm.addEventListener("submit", async (e) => {
 emailInput.addEventListener("input", hideMessage);
 usernameInput.addEventListener("input", hideMessage);
 passwordInput.addEventListener("input", hideMessage);
+confirmPasswordInput.addEventListener("input", hideMessage);

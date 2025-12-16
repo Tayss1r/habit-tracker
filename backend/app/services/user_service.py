@@ -73,5 +73,4 @@ class UserService:
             return User(**user_doc)
         return None
 
-# Create service instance
 user_service = UserService()

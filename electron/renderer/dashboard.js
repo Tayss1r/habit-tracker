@@ -30,6 +30,7 @@ const profileImageSelect = document.getElementById("profileImageSelect");
 const profileUsername = document.getElementById("profileUsername");
 const profileEmail = document.getElementById("profileEmail");
 const profilePassword = document.getElementById("profilePassword");
+const profileConfirmPassword = document.getElementById("profileConfirmPassword");
 const profileMessage = document.getElementById("profileMessage");
 
 // Category colors and icons
@@ -394,6 +395,7 @@ profileBtn.addEventListener("click", async () => {
     profileImageSelect.value = user.profile_image || "user-2.jpg";
     profileImagePreview.src = `../assets/figures/${user.profile_image || "user-2.jpg"}`;
     profilePassword.value = "";
+    profileConfirmPassword.value = "";
     
     profileModal.classList.remove("hidden");
   } catch (error) {
@@ -432,9 +434,15 @@ profileForm.addEventListener("submit", async (e) => {
 
   // Only include password if it's not empty
   const password = profilePassword.value.trim();
-  if (password) {
+  const confirmPassword = profileConfirmPassword.value.trim();
+  
+  if (password || confirmPassword) {
     if (password.length < 6) {
       showProfileMessage("Password must be at least 6 characters", "error");
+      return;
+    }
+    if (password !== confirmPassword) {
+      showProfileMessage("Passwords do not match", "error");
       return;
     }
     updateData.password = password;

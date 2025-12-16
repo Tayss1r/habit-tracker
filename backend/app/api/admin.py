@@ -19,7 +19,6 @@ async def get_all_users(admin_user_id: str = Query(...)):
         raise HTTPException(status_code=403, detail="Admin access required")
     
     users = await user_service.get_all_users()
-    # Remove passwords from response
     return [{"id": str(u.id), "username": u.username, "email": u.email, "is_admin": u.is_admin, "created_at": u.created_at} for u in users]
 
 
@@ -192,7 +191,7 @@ async def get_user_activity(admin_user_id: str = Query(...)):
 
 @admin_router.get("/statistics/new-users")
 async def get_new_users(admin_user_id: str = Query(...), days: int = 30):
-    """Get new user registrations over time (admin only)"""
+    """Get new user registrations over time"""
     admin = await user_service.get_user_by_id(admin_user_id)
     if not admin or not admin.is_admin:
         raise HTTPException(status_code=403, detail="Admin access required")
